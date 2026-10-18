@@ -1,0 +1,9 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+*.command text eol=lf
+*.sh text eol=lf
+*.py text eol=lf
+*.bat text eol=crlf
+# Preserve audited upstream icon and license bytes on all platforms
+server/static/icons/*.svg text eol=lf
+server/static/icons/LICENSE text eol=lf

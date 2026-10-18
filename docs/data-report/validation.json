@@ -1,0 +1,22 @@
+{
+  "company_count": 8,
+  "main_quant_count": 3,
+  "null_preserved": 178,
+  "private_key_scan": "PASS",
+  "original_source_hashes_unchanged": true,
+  "source_scope": "Git HEAD allowlist only; no original runtime DB or historical attest ledger accessed",
+  "scope2_fallback_triggered": false,
+  "no_freeze_or_network_calls": true,
+  "radar": "only adjacent non-null score vertices joined; all-null companies have no data lines",
+  "unverified": [
+    "未进行浏览器交互/打印与跨设备实际渲染测试",
+    "未核验原PDF、边界、气体和Scope2方法",
+    "未验证模型预测力、配额合规或真实授信适用性"
+  ],
+  "priority_advice": [
+    "P0：正式使用前逐项对照公开披露原文与年度边界",
+    "P1：区分环保费用与转型CapEx、装机与发电份额",
+    "P1：旧模型零替代/证据权重文字需另行授权处理；本任务不改业务代码",
+    "P2：扩大可比样本并评估权重、档位和增量预测能力"
+  ]
+}

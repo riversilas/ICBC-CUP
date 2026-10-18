@@ -1,0 +1,13 @@
+{
+  "name": "绿鉴 — 可信 ESG 数据平台",
+  "short_name": "绿鉴",
+  "description": "碳核算 · 证据链 · 报告存证 — 面向银行绿色金融场景",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f6f8f7",
+  "theme_color": "#1a7f4b",
+  "icons": [
+    { "src": "/static/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/static/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

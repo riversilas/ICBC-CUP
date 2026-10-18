@@ -1,0 +1,457 @@
+/* ============================================================
+   polish-theme.css · 视觉强化层 v2（轮廓/阴影 + 明暗双主题 + 动效）
+   v2 修正：
+   - 深色模式全面覆盖所有亮色硬编码面板，无刺眼留白
+   - 深色文字提亮，保证清晰度；哑金 #d4ad62 全程保留
+   - 主题由 JS 统一驱动 data-theme（auto 模式跟随系统实时切换），
+     CSS 只认 :root[data-theme=dark]，规则集中可靠
+   - reduced-motion 全停；打印完全让位
+   ============================================================ */
+
+/* ---------- 1. 语义变量（浅色默认） ---------- */
+:root{
+  --t-surface:#ffffff;
+  --t-surface-raised:#ffffff;
+  --t-surface-sunken:#f0f5e9;
+  --t-canvas:#f4f7f2;
+  --t-ink:#1c2b24;
+  --t-ink-strong:#123e30;
+  --t-ink-soft:#52685c;
+  --t-line:#c9d8c6;
+  --t-line-strong:#9db99a;
+  --t-brand-forest:#123e30;
+  --t-brand-forest-hover:#1a5240;
+  --t-brand-forest-solid:#123e30;
+  --t-on-brand:#f2f8ee;
+  --t-gold:#b48a37;
+  --t-gold-soft:#d9c08a;
+  --t-mint:#eaf4ec;
+  --t-focus:#a58a43;
+  --t-shadow-sm:0 1px 3px #123e3016,0 2px 6px -2px #123e3022;
+  --t-shadow-md:0 2px 6px #123e3016,0 14px 32px -14px #123e304d;
+  --t-shadow-lg:0 4px 12px #123e301a,0 28px 64px -20px #123e3066;
+  --t-backdrop:#09291e8c;
+  color-scheme:light;
+}
+:root[data-theme=dark]{
+  --t-surface:#16291f;
+  --t-surface-raised:#1d3327;
+  --t-surface-sunken:#122219;
+  --t-canvas:#0c1812;
+  --t-ink:#dbe8d8;
+  --t-ink-strong:#f0f6ea;
+  --t-ink-soft:#9db4a2;
+  --t-line:#33543f;
+  --t-line-strong:#4c7a5e;
+  --t-brand-forest:#2e8760;
+  --t-brand-forest-hover:#3da276;
+  --t-brand-forest-solid:#17402e;
+  --t-on-brand:#eef5e8;
+  --t-gold:#d9b264;
+  --t-gold-soft:#8a6f3a;
+  --t-mint:#1c3428;
+  --t-focus:#d9b264;
+  --t-shadow-sm:0 1px 3px #00000059,0 2px 6px -2px #00000066;
+  --t-shadow-md:0 2px 6px #0000004d,0 14px 32px -14px #000000a6;
+  --t-shadow-lg:0 4px 12px #00000066,0 28px 64px -20px #000000cc;
+  --t-backdrop:#000000b8;
+  color-scheme:dark;
+}
+
+/* ---------- 2. 对话框：金色描边 + 光环 + 深阴影 ---------- */
+dialog{
+  border:1px solid var(--t-gold)!important;
+  border-radius:16px!important;
+  background:var(--t-surface-raised)!important;
+  color:var(--t-ink)!important;
+  box-shadow:0 0 0 4px var(--t-gold-soft),var(--t-shadow-lg)!important;
+}
+dialog::backdrop{background:var(--t-backdrop)!important;backdrop-filter:blur(4px) saturate(1.1)}
+dialog h2{color:var(--t-ink-strong)!important}
+dialog p{color:var(--t-ink)!important}
+#toast{
+  background:var(--t-surface-raised)!important;
+  color:var(--t-ink-strong)!important;
+  border:1px solid var(--t-gold)!important;
+  box-shadow:0 0 0 3px var(--t-gold-soft),var(--t-shadow-lg)!important;
+}
+
+/* ---------- 3. 面板体系：轮廓 + 分层阴影（明暗通用） ---------- */
+.panel,.main-original-quant .card,.single-demo,.simple-demo-result,
+.chain-playground,.lab-explanation,.report-scope-note,.model-only-grade,
+.chain-demo-result,.verification-result,.boundary-note,#playgroundResult{
+  background:var(--t-surface)!important;
+  border:1px solid var(--t-line-strong)!important;
+  box-shadow:var(--t-shadow-md)!important;
+}
+.metric,.kpi{
+  background:var(--t-surface-raised)!important;
+  border:1px solid var(--t-line)!important;
+  color:var(--t-ink-strong)!important;
+  box-shadow:var(--t-shadow-sm)!important;
+  transition:box-shadow .25s ease,transform .25s ease,border-color .25s ease;
+}
+.metric:hover,.kpi:hover{
+  box-shadow:var(--t-shadow-md)!important;
+  border-color:var(--t-gold)!important;
+  transform:translateY(-2px);
+}
+.metric small,.kpi .l{color:var(--t-ink-soft)!important}
+
+/* ---------- 4. 表格（含 novice-audit 的 !important 覆盖，本层最后加载生效） ---------- */
+table th,.main-original-quant table th{
+  background:var(--t-brand-forest-solid)!important;
+  color:#f2f8ee!important;
+  border-bottom:2px solid var(--t-gold)!important;
+}
+table td,.main-original-quant table td{border-bottom-color:var(--t-line)!important}
+table tbody tr:nth-child(even) td{background:var(--t-surface-sunken)!important}
+table tbody tr:nth-child(odd) td{background:var(--t-surface)!important}
+table tbody tr:hover td{background:var(--t-mint)!important}
+
+/* ---------- 5. 基础面与文字（明暗通用，深色下清晰） ---------- */
+body{background:var(--t-canvas)!important;color:var(--t-ink)!important}
+h1,h2,h3,h4{color:var(--t-ink-strong)!important}
+p,li,label{color:var(--t-ink)!important}
+small{color:var(--t-ink-soft)!important}
+.muted{color:var(--t-ink-soft)!important}
+.eyebrow{color:var(--t-gold)!important}
+a{color:var(--t-brand-forest)}
+:root[data-theme=dark] a{color:var(--t-gold)}
+select,input,textarea{
+  background:var(--t-surface)!important;
+  color:var(--t-ink-strong)!important;
+  border:1px solid var(--t-line-strong)!important;
+}
+select option{background:var(--t-surface-raised);color:var(--t-ink-strong)}
+code{
+  background:var(--t-surface-sunken)!important;
+  color:var(--t-ink-strong)!important;
+  border:1px solid var(--t-line);
+}
+.badge{background:var(--t-surface-sunken)!important;color:var(--t-ink-strong)!important;border:1px solid var(--t-line)!important}
+.badge.green{background:var(--t-mint)!important;border-color:var(--t-brand-forest)!important}
+.badge.amber{background:var(--t-gold-soft)!important;border-color:var(--t-gold)!important;color:#1c2b24!important}
+.badge.neutral{background:var(--t-surface-sunken)!important}
+
+/* ---------- 6. 结构组件：深色全覆盖（无留白） ---------- */
+:root[data-theme=dark] .step{
+  background:var(--t-surface-raised)!important;
+  border-color:var(--t-line)!important;
+  color:var(--t-ink-soft)!important;
+}
+:root[data-theme=dark] .step b{color:var(--t-ink-strong)!important}
+:root[data-theme=dark] .step.active{background:var(--t-mint)!important;border-color:var(--t-gold)!important;color:var(--t-ink-strong)!important}
+:root[data-theme=dark] .step.done{background:var(--t-surface-sunken)!important;border-color:var(--t-line-strong)!important}
+:root[data-theme=dark] .company-card,
+:root[data-theme=dark] .recent-item,
+:root[data-theme=dark] .chain-node{
+  background:var(--t-surface-raised)!important;
+  color:var(--t-ink)!important;
+  border:1px solid var(--t-line)!important;
+  box-shadow:var(--t-shadow-sm)!important;
+}
+:root[data-theme=dark] .company-card h3,
+:root[data-theme=dark] .recent-item b,
+:root[data-theme=dark] .chain-node b{color:var(--t-ink-strong)!important}
+:root[data-theme=dark] .chain-node.selected{border-color:var(--t-gold)!important;box-shadow:0 0 0 2px var(--t-gold-soft)!important}
+:root[data-theme=dark] details.disclosure>summary{
+  background:var(--t-surface-sunken)!important;
+  color:var(--t-ink-strong)!important;
+}
+:root[data-theme=dark] .demo-track span{
+  background:var(--t-surface-sunken)!important;
+  color:var(--t-ink-soft)!important;
+  border-color:var(--t-line)!important;
+}
+:root[data-theme=dark] .demo-track .current{background:#17402e!important;color:#f2f8ee!important;border-color:var(--t-gold)!important}
+:root[data-theme=dark] .lab-change{background:var(--t-mint)!important;border-left-color:var(--t-gold)!important}
+:root[data-theme=dark] .lab-change span,
+:root[data-theme=dark] .lab-change b{color:var(--t-ink-strong)!important}
+:root[data-theme=dark] .confidence-grid article{background:var(--t-surface-sunken)!important;border-color:var(--t-line)!important}
+:root[data-theme=dark] .confidence-grid b{color:var(--t-ink-strong)!important}
+:root[data-theme=dark] .confidence-grid p{color:var(--t-ink)!important}
+/* novice-audit 强制亮色的实验区，在深色下改为对应深色（同特异性后者胜） */
+:root[data-theme=dark] #scenarioLabMount .panel{background:var(--t-surface)!important}
+:root[data-theme=dark] #scenarioLabMount .table-wrap{background:var(--t-surface)!important;border-color:var(--t-line)!important}
+:root[data-theme=dark] #scenarioLabMount table td{color:var(--t-ink)!important;background:var(--t-surface)!important}
+:root[data-theme=dark] #scenarioLabMount table tbody tr:nth-child(even) td{background:var(--t-surface-sunken)!important}
+:root[data-theme=dark] #scenarioLabMount table tbody tr:hover td{background:var(--t-mint)!important}
+:root[data-theme=dark] #scenarioLabMount p,
+:root[data-theme=dark] #scenarioLabMount label{color:var(--t-ink)!important}
+:root[data-theme=dark] #scenarioLabMount .change-up{color:#e08a7e!important}
+:root[data-theme=dark] #scenarioLabMount .change-down{color:#5fbf8e!important}
+:root[data-theme=dark] #scenarioLabMount .change-flat{color:var(--t-ink-soft)!important}
+:root[data-theme=dark] .table-wrap,.root[data-theme=dark] .tbl-wrap{background:var(--t-surface)!important;border-color:var(--t-line)!important}
+:root[data-theme=dark] .sticky-next{background:#12351fe8!important}
+:root[data-theme=dark] .brand{background:#0f3123!important;border-bottom-color:var(--t-gold)!important}
+
+/* ---------- 7. 按钮 ---------- */
+button{transition:background .2s ease,box-shadow .22s ease,transform .18s ease,border-color .2s ease}
+button.primary{
+  background:var(--t-brand-forest)!important;
+  color:var(--t-on-brand)!important;
+  border:1px solid transparent!important;
+  box-shadow:var(--t-shadow-sm);
+}
+button.primary:hover{
+  background:var(--t-brand-forest-hover)!important;
+  box-shadow:0 6px 18px -6px var(--t-brand-forest),0 0 0 3px var(--t-gold-soft);
+  transform:translateY(-1px);
+}
+button.primary:active{transform:translateY(1px)}
+button.secondary{
+  background:var(--t-surface)!important;
+  border:1px solid var(--t-line-strong)!important;
+  color:var(--t-ink-strong)!important;
+}
+button.secondary:hover{border-color:var(--t-gold)!important;box-shadow:var(--t-shadow-md)!important;transform:translateY(-1px)}
+button:focus-visible{outline:3px solid var(--t-focus)!important;outline-offset:3px!important}
+
+/* ---------- 8. 页面切换与步骤动效 ---------- */
+.view.active{animation:theme-page-in .34s cubic-bezier(.22,.61,.36,1) both}
+@keyframes theme-page-in{
+  from{opacity:0;transform:translateY(14px) scale(.995)}
+  60%{opacity:1}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+.step.active{animation:theme-step-pulse 2.8s ease-in-out infinite}
+@keyframes theme-step-pulse{
+  0%,100%{box-shadow:0 4px 16px #173e3020}
+  50%{box-shadow:0 4px 16px #173e3020,0 0 0 4px var(--t-gold-soft)}
+}
+
+/* 第四步深绿章节标题条使用浅字，其他浅色卡片标题保持深绿。 */
+:root:not([data-theme=dark]) #view4 #chainDisclosure > h3{color:#e4ecd8!important}
+:root:not([data-theme=dark]) #view4 .chain-detail h3,
+:root:not([data-theme=dark]) #view4 #chainSummary h3{color:#f1f7ee!important}
+
+/* 浅色模式的链详情仍为深色面板，避免全局深字覆盖。 */
+:root:not([data-theme=dark]) #view4 .chain-detail{color:#cde8d6}
+:root:not([data-theme=dark]) #view4 .chain-detail h4{color:#f1f7ee!important}
+:root:not([data-theme=dark]) #view4 .chain-detail p,
+:root:not([data-theme=dark]) #view4 .chain-detail li,
+:root:not([data-theme=dark]) #view4 .chain-detail label{color:#cde8d6!important}
+
+/* 第四步节点指示灯与副本演示展开区间距。 */
+#view4 .node-light{min-height:0}
+#view4 .demo-secondary{padding-bottom:10px}
+#view4 .demo-secondary p{padding-left:10px}
+#view4 .demo-secondary button{margin-left:10px}
+
+/* 暗色报告正文前两列：覆盖旧版固定深绿色，打印保持原样。 */
+@media screen{
+  :root[data-theme=dark] .workspace .panel.printable td:first-child,
+  :root[data-theme=dark] .workspace .panel.printable td:nth-child(2){color:#fff!important}
+}
+
+/* 暗色工作台：企业入口白字、评分标签白字、绿色数据提亮。 */
+:root[data-theme=dark] #view1 .company-bottom b{color:#fff!important}
+:root[data-theme=dark] #view2 #d_radar_gaps .dim-row .nm,
+:root[data-theme=dark] #view2 #d_radar_gaps .dim-row .nt{color:#fff!important}
+:root[data-theme=dark] #view2 #d_radar_gaps .dim-row .vl{color:#79e8ad!important}
+:root[data-theme=dark] #view2 #d_radar svg text{fill:#fff!important}
+:root[data-theme=dark] #view2 #d_radar svg text[fill="#1f6b4a"],
+:root[data-theme=dark] #view2 #d_radar svg text[fill="#177245"]{fill:#79e8ad!important}
+:root[data-theme=dark] #view2 #d_radar svg text[fill="#b4453a"]{fill:#ff9a8e!important}
+:root[data-theme=dark] #view2 #d_radar svg [stroke="#1f6b4a"]{stroke:#79e8ad!important}
+:root[data-theme=dark] #view2 #d_radar svg circle[fill="#1f6b4a"]{fill:#79e8ad!important}
+:root[data-theme=dark] #view2 #d_radar svg path[stroke="#1f6b4a"]{fill:rgba(121,232,173,.18)!important}
+:root[data-theme=dark] #view2 #d_radar .radar-legend i[style*="#1f6b4a"],
+:root[data-theme=dark] #view2 #d_ci_bar{background:#79e8ad!important}
+:root[data-theme=dark] #view2 #d_radar_gaps span[style*="#177245"],
+:root[data-theme=dark] #view2 #d_tau[style*="#177245"],
+:root[data-theme=dark] #view2 #d_tau[style*="23, 114, 69"]{color:#79e8ad!important}
+
+/* 第二步指标与排放构成折叠面板的间距。 */
+#view2 #profile .metric-grid + details.disclosure{margin-top:15px;margin-bottom:0}
+
+/* 工作台 table-wrap 表头统一13px，不影响打印。 */
+@media screen{
+  .workspace .table-wrap th,
+  .workspace .printable .table-wrap th,
+  .workspace .bank-columns .table-wrap th,
+  .workspace #scenarioLabMount .table-wrap th{font-size:13px}
+}
+
+/* 工作台底部：导航已为 sticky，不再需要旧 fixed 导航的100px预留。 */
+.workspace{padding-bottom:0}
+.workspace > footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:nowrap;gap:12px;margin-top:28px;padding:30px 0 60px;font-size:11px;line-height:1.5}
+.workspace > footer > b,.workspace > footer > span,.workspace > footer > button{font-size:11px;line-height:1.5;margin:0}
+.workspace > footer > b,.workspace > footer > button{flex-shrink:0;white-space:nowrap}
+.workspace > footer > span{text-align:center;min-width:0}
+.workspace > footer #specialNotes{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:5px 10px}
+.workspace > footer #specialNotes::before{vertical-align:middle;margin:0;flex-shrink:0}
+@media(max-width:480px){.workspace > footer{gap:6px}.workspace > footer #specialNotes{padding:5px 4px;gap:3px}.workspace > footer > span{white-space:normal}}
+
+/* ---------- 9. 顶部绝对定位的本地明暗图标 ---------- */
+#themeToggle{
+  position:absolute;top:12px;right:14px;z-index:60;
+  display:flex;align-items:center;justify-content:center;
+  width:36px;height:36px;min-height:36px;min-width:36px;
+  padding:0;
+  font-size:0;letter-spacing:0;
+  border-radius:50%;
+  background:rgba(255,255,255,.18)!important;
+  color:#fff!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+#themeToggle:hover{background:rgba(255,255,255,.28)!important;color:#fff!important;box-shadow:none!important}
+#themeToggle .theme-symbol{display:block;width:21px;height:21px;background:currentColor;-webkit-mask:var(--theme-symbol-image) center/contain no-repeat;mask:var(--theme-symbol-image) center/contain no-repeat}
+#themeToggle{--theme-symbol-image:url('/static/icons/light_mode.svg')}
+#themeToggle[data-theme-icon="dark_mode"]{--theme-symbol-image:url('/static/icons/dark_mode.svg')}
+#themeToggle[data-theme-icon="light_mode"]{--theme-symbol-image:url('/static/icons/light_mode.svg')}
+#themeToggle:focus-visible{outline:3px solid var(--t-gold);outline-offset:3px}
+@media(forced-colors:active){#themeToggle .theme-symbol{background:ButtonText}}
+@media(max-width:600px){#themeToggle{top:10px;right:10px}}
+
+/* ---------- 10. reduced-motion 全停 ---------- */
+@media (prefers-reduced-motion:reduce){
+  .view.active{animation:none!important}
+  .step.active{animation:none!important}
+  .metric:hover,.kpi:hover,button.primary:hover,button.secondary:hover{transform:none!important}
+  *{transition-duration:.01ms!important;animation-duration:.01ms!important}
+}
+
+/* ---------- 11. 打印让位 ---------- */
+@media print{
+  #themeToggle{display:none!important}
+  .panel,.main-original-quant .card,dialog{background:#fff!important;border-color:#d3dfce!important;box-shadow:none!important}
+  body{background:#fff!important;color:#1c2b24!important}
+  h1,h2,h3,h4,p,small,label,li,td,th{color:#1c2b24!important}
+}
+
+/* Contrast repair: foreground/background pairs, scoped to each surface. */
+/* Brand and hero stay forest green in BOTH themes. */
+.brand .identity,.brand .identity strong{color:#f4f5e9!important}
+.brand .identity small,.brand .brand-note,.brand .brand-note span{color:#d6dfce!important}
+#landing196 .l196-hero{background:#103b2d!important;color:#f3f6eb!important}
+#landing196 .l196-hero h1{color:#f3f6eb!important}
+#landing196 .l196-hero h1 span{color:#dfbf78!important}
+#landing196 .l196-hero .l196-lead{color:#d1dfd0!important}
+#landing196 .l196-hero .l196-kicker{color:#dfbf78!important}
+#landing196 .l196-hero .l196-art-functions li{background:#1b4937!important;color:#e1eadd!important;border-color:#66816c!important}
+#landing196 .l196-hero .l196-primary,#landing196 .l196-primary{background:#dfbf78!important;color:#18392c!important;border-color:#dfbf78!important}
+#landing196 .l196-hero .l196-outline{background:#143f30!important;color:#f0f4e9!important;border-color:#93aa8e!important}
+#landing196 .l196-hero .l196-motion-toggle{background:#143f30!important;color:#f0f4e9!important;border-color:#93aa8e!important}
+#landing196 .l196-btn.l196-outline:hover,
+#landing196 .l196-motion-toggle:hover:not(:disabled){background:rgba(255,255,255,.18)!important}
+#landing196 .l196-hero .l196-motion-status{color:#d1dfd0!important}
+/* The rest of the landing page uses theme surfaces, never a light card with light text. */
+#landing196{background:var(--t-canvas)!important;color:var(--t-ink)!important}
+#landing196 .l196-demo,#landing196 .l196-paper{background:var(--t-surface)!important;color:var(--t-ink)!important;border-color:var(--t-line-strong)!important;box-shadow:var(--t-shadow-md)!important}
+#landing196 .l196-metric-grid>div,#landing196 .l196-track-dot,#landing196 .l196-check-row>span,#landing196 .l196-version-path span,#landing196 .l196-mini-label{background:var(--t-surface-sunken)!important;color:var(--t-ink)!important;border-color:var(--t-line)!important}
+#landing196 .l196-progress,#landing196 .l196-values,#landing196 .l196-footer{background:var(--t-surface-sunken)!important;color:var(--t-ink)!important;border-color:var(--t-line)!important}
+#landing196 .l196-metric-grid b,#landing196 .l196-demo h3,#landing196 .l196-chapter-copy h2,#landing196 .l196-section-heading h2,#landing196 .l196-value-grid h3,#landing196 .l196-final h2,#landing196 .l196-footer b{color:var(--t-ink-strong)!important}
+#landing196 .l196-chapter-copy>p,#landing196 .l196-section-heading>p,#landing196 .l196-track p,#landing196 .l196-check-row p,#landing196 .l196-value-grid p,#landing196 .l196-final>p,#landing196 .l196-boundary p{color:var(--t-ink-soft)!important}
+#landing196 .l196-metric-grid span,#landing196 .l196-metric-grid small,#landing196 .l196-demo-foot,#landing196 .l196-paper p,#landing196 .l196-radar-legend,#landing196 .l196-chart span{color:var(--t-ink-soft)!important}
+#landing196 .l196-number,#landing196 .l196-paper-brand,#landing196 .l196-track small,#landing196 .l196-kicker,#landing196 .l196-value-grid article>span{color:var(--t-gold)!important}
+#landing196 .l196-progress a,#landing196 .l196-text-link,#landing196 .l196-light{color:var(--t-ink-strong)!important;border-color:var(--t-line-strong)!important}
+:root[data-theme=dark] #landing196 .l196-final .l196-light:hover{color:#123e30!important}
+#landing196 .l196-progress a[aria-current]{color:var(--t-gold)!important;border-bottom-color:var(--t-gold)!important}
+#landing196 .l196-version-path b{background:var(--t-mint)!important;color:var(--t-ink-strong)!important;border-color:var(--t-line-strong)!important}
+/* Workbench hardcoded light surfaces and dark labels. */
+:root[data-theme=dark] .context,:root[data-theme=dark] .source-card,:root[data-theme=dark] .disclosure-body,:root[data-theme=dark] .bank-area,:root[data-theme=dark] .bank-columns article,:root[data-theme=dark] .chain-detail,:root[data-theme=dark] .hash-grid>div,:root[data-theme=dark] .result-grid>div{background:var(--t-surface)!important;color:var(--t-ink)!important;border-color:var(--t-line)!important}
+:root[data-theme=dark] .metric strong,:root[data-theme=dark] .company-value,:root[data-theme=dark] .dim-row .vl{color:var(--t-ink-strong)!important}
+:root[data-theme=dark] .dim-row .nt,:root[data-theme=dark] .radar-legend{color:var(--t-ink-soft)!important}
+:root[data-theme=dark] #scenarioLabMount h3,:root[data-theme=dark] #scenarioLabMount h4,:root[data-theme=dark] #chainPlayground h3{color:var(--t-ink-strong)!important}
+:root[data-theme=dark] #scenarioLabMount .lab-change,:root[data-theme=dark] #scenarioLabMount .confidence-grid article{background:var(--t-surface-sunken)!important;color:var(--t-ink)!important}
+:root[data-theme=dark] #scenarioLabMount .lab-change span,:root[data-theme=dark] #scenarioLabMount .confidence-grid b{color:var(--t-ink-strong)!important}
+:root[data-theme=dark] #scenarioLabMount .confidence-grid p{color:var(--t-ink)!important}
+:root[data-theme=dark] .tbl-wrap{background:var(--t-surface)!important;border-color:var(--t-line)!important}
+@media print{#landing196{display:none!important}}
+
+/* Workbench black-gold surfaces: scoped to screen dark theme, print stays paper. */
+@media screen{
+:root[data-theme=dark] .workspace{--forest:#e0bc71;--ink:#e6e9df;--muted:#b4b9aa;--line:#655737;--paper:#245540;--mint:#32674e;--bg:#10150f;--t-surface:#245540;--t-surface-raised:#30654d;--t-surface-sunken:#1b4232;--t-ink:#ffffff;--t-ink-strong:#ffffff;--t-ink-soft:#ffffff;--t-line:#44745d;--t-line-strong:#6b987b;--t-gold:#d4bc7b}
+:root[data-theme=dark] .workspace details,
+:root[data-theme=dark] .workspace .report-chart-layout,
+:root[data-theme=dark] .workspace .report-disclaimer,
+:root[data-theme=dark] .workspace .single-period-note,
+:root[data-theme=dark] .workspace .digest-block,
+:root[data-theme=dark] .workspace .status-card,
+:root[data-theme=dark] .workspace .file-label,
+:root[data-theme=dark] .workspace .finding,
+:root[data-theme=dark] .workspace .empty,
+:root[data-theme=dark] .workspace .loading,
+:root[data-theme=dark] .workspace .error,
+:root[data-theme=dark] .workspace pre,
+:root[data-theme=dark] .workspace .report-paper,
+:root[data-theme=dark] .workspace .recent-item{background:var(--t-surface)!important;background-image:none!important;color:var(--t-ink)!important;border-color:var(--t-line-strong)!important}
+:root[data-theme=dark] .workspace .report-chart-layout{background:#245540!important}
+:root[data-theme=dark] .workspace .report-disclaimer{border-left:4px solid var(--t-gold)!important}
+:root[data-theme=dark] .workspace .report-disclaimer b,
+:root[data-theme=dark] .workspace .report-disclaimer p,
+:root[data-theme=dark] .workspace .report-chart-layout td,
+:root[data-theme=dark] .workspace .report-chart-layout th{color:var(--t-ink)!important}
+/* Keep relative-radar directional axes distinct from neutral production labels. */
+.workspace .radar-chart .radar-emission-label{fill:#397c9a!important}
+.workspace .radar-chart .radar-production-label{fill:#927d55!important}
+.workspace .radar-chart .radar-direction{font-size:10px}
+:root[data-theme=dark] .workspace .radar-chart .radar-emission-label{fill:#a2cee4!important}
+:root[data-theme=dark] .workspace .radar-chart .radar-production-label{fill:#d1bf98!important}
+:root[data-theme=dark] .workspace .radar-chart .radar-overflow{fill:#abcdf2!important}
+:root[data-theme=dark] .workspace .report-radar196 text,
+:root[data-theme=dark] .workspace .main-quant-radar text,
+:root[data-theme=dark] .workspace .radar-svg text{fill:#e0dfc9!important}
+:root[data-theme=dark] .workspace .report-radar196 .radar-grid{stroke:#6e7056!important}
+:root[data-theme=dark] .workspace .previous-version-card{background:#245540!important;color:#eee7ce!important;border-color:#a68b50!important}
+:root[data-theme=dark] .workspace .previous-version-card code{color:#eee7ce!important}
+:root[data-theme=dark] .workspace .table-wrap,:root[data-theme=dark] .workspace .tbl-wrap{background:var(--t-surface)!important}
+:root[data-theme=dark] .workspace .tip span{background:#245540!important;color:#f2eedb!important;border:1px solid #a68b50}
+:root[data-theme=dark] .workspace .kpi .v,:root[data-theme=dark] .workspace .metric .v{color:var(--t-ink-strong)!important}
+#nextBtn{background:linear-gradient(125deg,#245540,#245540)!important;border:1px solid #bb9a50!important;color:#eed49a!important;box-shadow:0 5px 18px #0005!important}
+#nextBtn:hover{background:#9b8646!important;box-shadow:0 0 0 3px #b9974e40!important}
+.chain-receipt{margin-top:26px;padding:22px;border:1px solid #b59755;border-top:3px solid #d0b16c;border-radius:12px;background:#245540;color:#eee8d4}
+.chain-receipt h3,.chain-receipt p{color:#eee8d4!important}
+.chain-receipt table{color:#123e30}
+.chain-receipt table td{background:#f7faf5!important;color:#123e30!important;border-color:#c9d8c6!important}
+.chain-receipt table th{background:#eaf4ec!important;color:#123e30!important}
+.chain-receipt table td code{background:#eaf4ec!important;color:#123e30!important;border-color:#c9d8c6!important}
+.chain-receipt code{display:block;background:#36321b!important;color:#e5cb91!important;overflow-wrap:anywhere;white-space:normal;word-break:break-all;border-color:#655737!important}
+.chain-receipt .receipt-limit{font-size:12px;color:#c7c6b4!important}
+.report-actions a.button{background:var(--t-surface)!important;color:var(--t-ink-strong)!important;border:1px solid var(--t-line-strong)!important}
+}
+@media print{.chain-receipt{margin-top:20px;padding:14px;border:1px solid #867140;break-inside:avoid}.chain-receipt code{overflow-wrap:anywhere;word-break:break-all}.report-actions{display:none!important}}
+
+@media screen{:root[data-theme=dark] .main-original-quant .kpi,:root[data-theme=dark] .main-original-quant .notice,:root[data-theme=dark] .main-original-quant .sec{background:#245540!important;color:#ece7d4!important;border-color:#77633d!important}:root[data-theme=dark] .main-original-quant .score-big,:root[data-theme=dark] .main-original-quant .v{color:#d6b66e!important}:root[data-theme=dark] .main-original-quant .l{color:#c5c9b8!important}:root[data-theme=dark] .main-original-quant .bar{background:#494c35!important}}
+
+/* Forest surfaces: brighter than the dark canvas, paired with white text. */
+@media screen{
+#nextBtn{background:#245540!important;color:#fff!important;border-color:#d9b965!important}#nextBtn:hover{background:#30694f!important}
+.chain-receipt{background:#245540;color:#fff}.chain-receipt h3,.chain-receipt p,.chain-receipt .receipt-limit{color:#fff!important}
+:root[data-theme=dark] .chain-receipt table{color:#fff}
+:root[data-theme=dark] .chain-receipt table td,:root[data-theme=dark] .chain-receipt table th{background:#245540!important;color:#fff!important;border-color:#44745d!important}
+:root[data-theme=dark] .chain-receipt table td code{background:#15392b!important;color:#fff!important;border-color:#44745d!important}
+:root[data-theme=dark] .workspace .previous-version-card,:root[data-theme=dark] .workspace .previous-version-card code,:root[data-theme=dark] .main-original-quant .kpi,:root[data-theme=dark] .main-original-quant .notice,:root[data-theme=dark] .main-original-quant .sec{color:#fff!important}
+:root[data-theme=dark] .main-original-quant .score-big,:root[data-theme=dark] .main-original-quant .v,:root[data-theme=dark] .main-original-quant .l{color:#fff!important}
+}
+
+/* Independent Hero: quiet technology backdrop, three orbital planes. */
+#landing196 .l196-hero-art{position:relative;isolation:isolate}
+#landing196 .l196-orbit{width:100%;height:auto;max-height:510px;overflow:hidden;filter:none}
+#landing196 .hero-art-signature{display:flex;align-items:center;justify-content:center;gap:12px;margin:-5px 0 14px;color:#d9c48b!important;font:500 clamp(12px,1.2vw,16px)/1.5 'Segoe UI',sans-serif;letter-spacing:2px}
+#landing196 .hero-art-signature span{color:#7eae94}
+#landing196 .l196-motion-controls{margin-top:8px;opacity:.8}
+#landing196 .l196-motion-status{font-size:10px}
+@media(max-width:640px){#landing196 .hero-art-signature{letter-spacing:1px;gap:8px}#landing196 .l196-hero-art{min-height:0}}
+/* Shared sign semantics for change/deviation numbers, not ordinary shares. */
+:root{--change-positive:#b4453a;--change-negative:#177245;--change-neutral:#758078}
+:root[data-theme=dark]{--change-positive:#ff9389;--change-negative:#79e8ad;--change-neutral:#b8c4bc}
+:root .workspace [data-change-sign="positive"]{color:var(--change-positive)!important}
+:root .workspace [data-change-sign="negative"]{color:var(--change-negative)!important}
+:root .workspace [data-change-sign="neutral"]{color:var(--change-neutral)!important}
+:root .workspace svg text[data-change-sign="positive"]{fill:var(--change-positive)!important}
+:root .workspace svg text[data-change-sign="negative"]{fill:var(--change-negative)!important}
+:root .workspace svg text[data-change-sign="neutral"]{fill:var(--change-neutral)!important}
+:root[data-theme=dark] .workspace [data-change-sign="positive"]{color:var(--change-positive)!important}
+:root[data-theme=dark] .workspace [data-change-sign="negative"]{color:var(--change-negative)!important}
+:root[data-theme=dark] .workspace [data-change-sign="neutral"]{color:var(--change-neutral)!important}
+:root[data-theme=dark] .workspace svg text[data-change-sign="positive"]{fill:var(--change-positive)!important}
+:root[data-theme=dark] .workspace svg text[data-change-sign="negative"]{fill:var(--change-negative)!important}
+:root[data-theme=dark] .workspace svg text[data-change-sign="neutral"]{fill:var(--change-neutral)!important}
+/* Specificity intentionally exceeds legacy dark KPI and chart overrides. */
+:root[data-theme] .workspace.workspace [data-change-sign][data-change-sign="positive"]{color:var(--change-positive)!important;fill:var(--change-positive)!important}
+:root[data-theme] .workspace.workspace [data-change-sign][data-change-sign="negative"]{color:var(--change-negative)!important;fill:var(--change-negative)!important}
+:root[data-theme] .workspace.workspace [data-change-sign][data-change-sign="neutral"]{color:var(--change-neutral)!important;fill:var(--change-neutral)!important}

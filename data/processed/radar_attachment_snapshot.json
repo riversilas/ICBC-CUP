@@ -1,0 +1,111 @@
+{
+  "_meta": {
+    "title": "绿鉴 · 电力企业碳数据采集台账（3 家样本）",
+    "purpose": "记录每家企业碳相关指标的原始值与来源，作为雷达图与碳表现分的唯一输入。",
+    "updated": "2026-10",
+    "model": "GreenTrace-Power V3.1 (五维雷达)",
+    "dimensions": {
+      "D1_intensity": {
+        "name": "存量能效",
+        "raw": "度电碳排放强度 (gCO₂/kWh) = (范围一 + 范围二) ÷ 全口径发电量",
+        "score": "逆向归一化：(1000 − 强度) ÷ 10，限定 [0,100]",
+        "meaning": "反映机组技术是否先进（超超临界 vs 落后小火电）"
+      },
+      "D2_trend": {
+        "name": "边际改善",
+        "raw": "年度碳排放强度变化率 YoY Δ%",
+        "score": "50 + 50 × tanh(−5 × τ)，τ 为变化率（负=减排）",
+        "meaning": "转型金融的核心看点：银行支持的是『降得快』而非『天生绿』"
+      },
+      "D3_green_capex": {
+        "name": "绿色投入强度",
+        "raw": "环保节能投入 ÷ 现金流总资本开支 (CAPEX)，%",
+        "score": "正向线性映射，上限 5.0% → 100 分",
+        "meaning": "企业有没有真金白银投资未来，还是只在喊口号"
+      },
+      "D4_structure": {
+        "name": "低碳结构",
+        "raw": "控股清洁能源装机容量占比，%",
+        "score": "正向映射：直接对应百分比得分（100% 装机 = 100 分）",
+        "meaning": "抵御碳关税与煤价波动的长期结构韧性"
+      },
+      "D5_carbon_compliance": {
+        "name": "碳合规承压与边际收益",
+        "raw": "实际能效较全国基准线 (750 gCO₂/kWh) 的偏离度：(750 − 强度) ÷ 750",
+        "score": "以 50 分为配额平衡点；正偏离（结余）加分至 100，负偏离（缺口）扣分至 0",
+        "meaning": "直接关联银行信用风险：配额缺口需花钱买配额，现金流承压"
+      }
+    },
+    "baselines": {
+      "intensity_scale_max": 1000,
+      "intensity_scale_min": 0,
+      "national_benchmark_g_per_kwh": 750,
+      "green_capex_full_mark_pct": 5.0
+    },
+    "note": "维度 5 的基准线 750 gCO₂/kWh 为全国火电平均基准值，与维度 1 的标尺上限 1000 是两套不同参数，不可混用。"
+  },
+  "companies": [
+    {
+      "code": "601991", "name": "大唐发电", "group": "thermal", "type": "火电",
+      "years": {
+        "2022": {"scope1_tco2": 191860000, "scope2_tco2": 970000, "power_gen_gwh": 229517},
+        "2023": {"scope1_tco2": 196860000, "scope2_tco2": 170000, "power_gen_gwh": 274959},
+        "2024": {"scope1_tco2": 210817900, "scope2_tco2": 107600, "power_gen_gwh": 285153}
+      },
+      "clean_energy_share_pct": 40.37,
+      "clean_energy_share_basis": "控股清洁能源装机容量占比",
+      "green_capex_abs_yi": 7.48,
+      "green_capex_total_yi": 304.8,
+      "green_capex_note": "环保节能投入 7.48 亿元 ÷ 现金流总资本开支 304.8 亿元 = 2.45%",
+      "carbon_cost_note": "较全国基准线 750 gCO₂/kWh 偏离 +1.37%，配额基本平衡",
+      "previous_year": {"green_capex_pct": 1.2, "clean_energy_pct": 30.0},
+      "self_reported_intensity_g_per_kwh": 853.83,
+      "status": "verified",
+      "sources": [
+        "2024年度可持续发展报告（环境、社会及管治报告）环境绩效表",
+        "2024 年年度报告（现金流量表：资本开支）",
+        "界面新闻《五大电力上市公司碳排放量发布》汇总"
+      ]
+    },
+    {
+      "code": "600023", "name": "浙能电力", "group": "thermal", "type": "火电",
+      "years": {
+        "2022": {"scope1_tco2": 134210000, "scope2_tco2": 42000, "power_gen_gwh": 151986},
+        "2023": {"scope1_tco2": 141988000, "scope2_tco2": 49000, "power_gen_gwh": 163238},
+        "2024": {"scope1_tco2": 151762000, "scope2_tco2": 54000, "power_gen_gwh": 173952}
+      },
+      "clean_energy_share_pct": 10.87,
+      "clean_energy_share_basis": "控股清洁能源装机容量占比（年报披露值）",
+      "green_capex_abs_yi": 3.60,
+      "green_capex_total_yi": 96.8,
+      "green_capex_note": "环保总投入 3.60 亿元 ÷ 现金流总资本开支 96.8 亿元 = 3.72%",
+      "carbon_cost_note": "较全国基准线 750 gCO₂/kWh 偏离 −16.36%，配额严重超标，需外购配额",
+      "previous_year": {"green_capex_pct": 1.86, "clean_energy_pct": 9.0},
+      "status": "verified",
+      "sources": [
+        "2024年可持续发展暨环境、社会和治理（ESG）报告 关键绩效表",
+        "2024 年年度报告（现金流量表：资本开支、清洁能源装机）"
+      ]
+    },
+    {
+      "code": "600886", "name": "国投电力", "group": "clean", "type": "水电为主",
+      "years": {
+        "2023": {"scope1_tco2": 50018850, "scope2_tco2": 903413, "power_gen_gwh": 161966},
+        "2024": {"scope1_tco2": 48808719, "scope2_tco2": 698000, "power_gen_gwh": 172072}
+      },
+      "clean_energy_share_pct": 67.20,
+      "clean_energy_share_basis": "补充观测值（ESG口径，时点与年报不同，非年报值）；2024年报原文为70.42%（截至2024年底控股清洁能源装机占比），现行台账采用70.42",
+      "green_capex_abs_yi": 8.61,
+      "green_capex_total_yi": 217.7,
+      "green_capex_note": "环保投入 7.458 亿 + 节能投入 1.156 亿 = 8.61 亿元 ÷ 资本开支 217.7 亿元 = 3.96%",
+      "carbon_cost_note": "较全国基准线 750 gCO₂/kWh 偏离 +61.64%，巨额配额结余，形成正贡献",
+      "previous_year": {"green_capex_pct": 2.0, "clean_energy_pct": 12.05},
+      "status": "verified",
+      "sources": [
+        "2024年环境、社会与治理报告 关键绩效表（第一部分：环境范畴）",
+        "2024 年年度报告（现金流量表：资本开支）",
+        "报告正文：2024 年控股企业累计完成发电量 1720.72 亿千瓦时，同比增长 6.24%"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+# ============================================================
+# 绿链碳信 · Git 忽略规则
+# ============================================================
+
+# ---- Python 缓存与字节码 ----
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# ---- 虚拟环境 ----
+.venv/
+.venv-*/
+venv/
+env/
+ENV/
+.python-version
+
+# ---- 测试与覆盖率 ----
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+*.cover
+
+# ---- 打包产物（旧 zip 压缩包不发仓库）----
+*.zip
+*.tar
+*.tar.gz
+*.7z
+*.rar
+_pack/
+_work/
+_verify/
+
+# ---- 可执行文件（29MB 的 PyInstaller 包不进仓库）----
+*.exe
+*.dll
+*.pyd
+
+# ---- 系统隐藏文件 ----
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# ---- 编辑器与 IDE ----
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
+
+# ---- 本地融合运行数据（不提交用户补充与测试凭证）----
+/data/processed/chain_ledger.json
+/data/processed/*.sqlite*
+/fusion-assets/
+
+# ---- 日志与临时文件 ----
+*.log
+*.tmp
+*.bak
+*~
+.esg_run.log
+esg_err.log
+
+# ============================================================
+# 以下内容【必须被追踪】，此处仅作说明，请勿取消注释
+# ============================================================
+# app.py / carbon_model.py / miniserver.py / normalize.py   核心代码
+# static/                                                   前端与图片资源
+# data/*.json                                               数据配置与披露台账
+# chain_ledger.json                                         存证账本（演示用，可清空重置）
+# README.md / 算法说明_V3.0.md / 使用说明                    文档
+# 启动.bat / requirements.txt                                启动与依赖

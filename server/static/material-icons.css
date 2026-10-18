@@ -1,0 +1,42 @@
+/* Google Material Symbols Outlined, local SVG only; icons/LICENSE. */
+[data-material-icon]::before {
+  content: "";
+  display: inline-block;
+  inline-size: 1.125rem;
+  block-size: 1.125rem;
+  margin-inline-end: .4em;
+  vertical-align: -.22em;
+  flex: 0 0 1.125rem;
+  background-color: currentColor;
+  -webkit-mask: var(--material-icon-image) center / contain no-repeat;
+  mask: var(--material-icon-image) center / contain no-repeat;
+  pointer-events: none;
+}
+[data-material-icon="search"] { --material-icon-image: url("/static/icons/search.svg?v=20261017"); }
+[data-material-icon="refresh"] { --material-icon-image: url("/static/icons/refresh.svg?v=20261017"); }
+[data-material-icon="description"] { --material-icon-image: url("/static/icons/description.svg?v=20261017"); }
+[data-material-icon="domain"] { --material-icon-image: url("/static/icons/domain.svg?v=20261017"); }
+[data-material-icon="manage_search"] { --material-icon-image: url("/static/icons/manage_search.svg?v=20261017"); }
+[data-material-icon="help"] { --material-icon-image: url("/static/icons/help.svg?v=20261017"); }
+[data-material-icon="history"] { --material-icon-image: url("/static/icons/history.svg?v=20261017"); }
+[data-material-icon="check_circle"] { --material-icon-image: url("/static/icons/check_circle.svg?v=20261017"); }
+[data-material-icon="close"] { --material-icon-image: url("/static/icons/close.svg?v=20261017"); }
+[data-material-icon="arrow_back"] { --material-icon-image: url("/static/icons/arrow_back.svg?v=20261017"); }
+[data-material-icon="arrow_forward"] { --material-icon-image: url("/static/icons/arrow_forward.svg?v=20261017"); }
+[data-material-icon="science"] { --material-icon-image: url("/static/icons/science.svg?v=20261017"); }
+[data-material-icon="download"] { --material-icon-image: url("/static/icons/download.svg?v=20261017"); }
+[data-material-icon="analytics"] { --material-icon-image: url("/static/icons/analytics.svg?v=20261017"); }
+/* Existing compact ? and × controls already have accessible names. Keep their
+   original characters as the failure/forced-color fallback, without doubling up. */
+.tip > button[data-material-icon], .dialog-x[data-material-icon] { font-size: 0; }
+.tip > button[data-material-icon]::before,
+.dialog-x[data-material-icon]::before { margin: 0; vertical-align: middle; }
+@supports not ((mask-image: url("")) or (-webkit-mask-image: url(""))) {
+  [data-material-icon]::before { display: none; }
+  .tip > button[data-material-icon], .dialog-x[data-material-icon] { font-size: 1rem; }
+}
+@media (forced-colors: active) {
+  [data-material-icon]::before { display: none; }
+  .tip > button[data-material-icon], .dialog-x[data-material-icon] { font-size: 1rem; }
+}
+@media print { [data-material-icon]::before { display: none; } }
